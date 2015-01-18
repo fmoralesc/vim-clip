@@ -77,8 +77,8 @@ class SetClip : Gtk.Application {
         this.clipboard.set_with_owner(targets, get_func, clear_func, this); 
         this.clipboard.set_can_store(targets);
         this.clipboard.store();
-        // TODO: we should fork
-        Gtk.main();
+        // we don't need to fork() anymore, the clipboard is properly stored
+        //Gtk.main();
     }
 }
 
