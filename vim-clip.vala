@@ -55,34 +55,28 @@ class SetClip : Gtk.Application {
         this.kind = kind;
     }
     
-    /* 
     public static void get_func(Gtk.Clipboard clipboard, Gtk.SelectionData selection_data, uint info, void* data) {
-        selection_data.set(Gdk.Atom.intern_static_string("TEXT"), 8, (uchar[]) data);
-        selection_data.set(Gdk.Atom.intern_static_string("STRING"), 8, (uchar[]) data);
-        selection_data.set(Gdk.Atom.intern_static_string("COMPOUND_TEXT"), 8, (uchar[]) data);
-        selection_data.set(Gdk.Atom.intern_static_string("UTF8_STRING"), 8, (uchar[]) data);
+        selection_data.set_text(((SetClip)data).data, ((SetClip)data).data.length);
         // TODO: this should be encoded
-        selection_data.set(Gdk.Atom.intern_static_string("_VIMENC_TEXT"), 8, (uchar[]) data);
+        selection_data.set(Gdk.Atom.intern_static_string("_VIMENC_TEXT"), 8, (uchar[])((SetClip)data).data.data);
     }
 
     public static void clear_func(Gtk.Clipboard c, void* data) {
+        return; 
     }
-    */
 
     public override void activate( ) {
         // would prefer to call gtk_target_list_add_text_targets
-        /*
-        Gtk.TargetEntry t1 = { "TEXT", 0, 0};
-        Gtk.TargetEntry t2 = { "STRING", 0, 0};
-        Gtk.TargetEntry t3 = { "COMPOUND_TEXT", 0, 0};
-        Gtk.TargetEntry t4 = { "UTF8_STRING", 0, 0};
-        Gtk.TargetEntry t5 = { "_VIMENC_TEXT", 0, 0};
-        Gtk.TargetEntry[] targets = { t1, t2, t3, t4, t5 }; */
+        Gtk.TargetEntry t1 = { "TEXT", 8, 0};
+        Gtk.TargetEntry t2 = { "STRING", 8, 0};
+        Gtk.TargetEntry t3 = { "COMPOUND_TEXT", 8, 0};
+        Gtk.TargetEntry t4 = { "UTF8_STRING", 8, 0};
+        Gtk.TargetEntry t5 = { "_VIMENC_TEXT", 8, 0};
+        Gtk.TargetEntry[] targets = { t1, t2, t3, t4, t5};
         this.clipboard = Gtk.Clipboard.get(this.clipboard_atom);
-        this.clipboard.set_text(this.data, -1);
-        //this.clipboard.set_with_owner(targets, get_func, clear_func,  this); 
+        this.clipboard.set_with_owner(targets, get_func, clear_func, this); 
+        this.clipboard.set_can_store(targets);
         this.clipboard.store();
-        this.clipboard.owner_change.connect(Gtk.main_quit); // if someone else copies, we quit
         // TODO: we should fork
         Gtk.main();
     }
