@@ -42,14 +42,15 @@ class GetClip : Gtk.Application {
 }
 
 class SetClip : Gtk.Application {
+    Gdk.Atom clipboard_atom;
+    Gtk.Clipboard clipboard;
     SelectionKind kind;
-    Gdk.Atom clipboard;
     string data;
 
     public SetClip(Gdk.Atom clipboard, string data, SelectionKind kind) {
         Object( application_id : "clip.neovim.org",
                 flags: ApplicationFlags.FLAGS_NONE );
-        this.clipboard = clipboard;
+        this.clipboard_atom = clipboard;
         this.data = data;
         this.kind = kind;
     }
@@ -57,8 +58,8 @@ class SetClip : Gtk.Application {
     public override void activate( ) {
         //Gtk.TargetEntry t = { "_VIMENC_TEXT", 0, 0};
         //Gtk.TargetEntry[] targets = { t };
-        var clip = Gtk.Clipboard.get(this.clipboard);
-        clip.set_text(this.data, -1);
+        this.clipboard = Gtk.Clipboard.get(this.clipboard_atom);
+        this.clipboard.set_text(this.data, -1);
         /*
         clip.set_with_owner( targets,
                 // get_func
@@ -76,7 +77,8 @@ class SetClip : Gtk.Application {
                 // owner
                 this); 
         */
-        clip.store();
+        this.clipboard.store();
+        this.clipboard.owner_change.connect(Gtk.main_quit); // if someone else copies, we quit
         Gtk.main();
     }
 }
