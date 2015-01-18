@@ -17,7 +17,7 @@ class GetClip : Gtk.Application {
 
     public GetClip(Gdk.Atom clipboard) {
         Object( application_id : "clip.neovim.org",
-                flags: ApplicationFlags.FLAGS_NONE );
+                flags: ApplicationFlags.NON_UNIQUE );
         this.clipboard = clipboard;
     }
 
@@ -49,7 +49,7 @@ class SetClip : Gtk.Application {
 
     public SetClip(Gdk.Atom clipboard, string data, SelectionKind kind) {
         Object( application_id : "clip.neovim.org",
-                flags: ApplicationFlags.FLAGS_NONE );
+                flags: ApplicationFlags.NON_UNIQUE );
         this.clipboard_atom = clipboard;
         this.data = data;
         this.kind = kind;
