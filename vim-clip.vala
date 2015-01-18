@@ -67,11 +67,11 @@ class SetClip : Gtk.Application {
 
     public override void activate( ) {
         // would prefer to call gtk_target_list_add_text_targets
-        Gtk.TargetEntry t1 = { "TEXT", 8, 0};
-        Gtk.TargetEntry t2 = { "STRING", 8, 0};
-        Gtk.TargetEntry t3 = { "COMPOUND_TEXT", 8, 0};
-        Gtk.TargetEntry t4 = { "UTF8_STRING", 8, 0};
-        Gtk.TargetEntry t5 = { "_VIMENC_TEXT", 8, 0};
+        Gtk.TargetEntry t1 = { "TEXT", 0, 0};
+        Gtk.TargetEntry t2 = { "STRING", 0, 0};
+        Gtk.TargetEntry t3 = { "COMPOUND_TEXT", 0, 0};
+        Gtk.TargetEntry t4 = { "UTF8_STRING", 0, 0};
+        Gtk.TargetEntry t5 = { "_VIMENC_TEXT", 0, 0};
         Gtk.TargetEntry[] targets = { t1, t2, t3, t4, t5};
         this.clipboard = Gtk.Clipboard.get(this.clipboard_atom);
         this.clipboard.set_with_owner(targets, get_func, clear_func, this); 
